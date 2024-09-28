@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+    :root{
+        --theme-color:#735e8f;
+        --theme-p:#777777;
+        --theme-bg:#f0f0f0;
+        --theme-higBg:#e7e7e7;
+        --theme-side:#ffffff;
+        --theme-mainText:#3c3c3c;
+        --theme-title:#777777;
+        --theme-link:#76a790;
+        --theme-code:#d6d6d6;
+        --width-side:200px;
+        --width-pageHelp-min:400px;
+        --width-pageHelp-max:800px;
+        --top-listIcon:40px;
+        --trfx-listIcon:0px;
+        --trfy-listIcon:4px;
+    }
+    body{
+        color: var(--theme-mainText);
+        background-color: var(--theme-bg);
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        font-family: Arial, Helvetica, sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        letter-spacing: 0.01em;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE/Edge */
+        user-select: none; /* 标准语法 */
+    }
+    pre{
+        width: 100%;
+        border-radius: 10px;
+        padding: 10px;
+        background: #323232;
+    }
+    code{
+        color: var(--theme-code);
+    }
+    a{
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--theme-link);
+    }
+    
+    h1{
+        color: var(--theme-color);
+        margin-top: 60px;
+        text-shadow:#222 0.5px -0.5px 0, #ffffff 0 0 2px, #ffffff 0 0 4px;
+    }
+    h2{
+        margin-top: 40px;
+    }
+    h3{
+        color: var(--theme-title);
+        margin-bottom: -10px;
+        font-weight: 500;
+    }
+    h3::before{
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #e7e4ee;
+        z-index: -1;
+        filter: blur(20px);
+    }
+    p{
+        color: var(--theme-p);
+        font-weight: 300;
+    }
+    .page-help{
+        width: calc(100% - 40px - var(--width-side));
+        min-width: var(--width-pageHelp-min);
+        max-width: var(--width-pageHelp-max);
+        position: relative;
+    }
+    .page-side{
+        position: fixed;
+        top:20px;
+        left: 40px;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--theme-side);
+        border-radius: 10px;
+        border: 1px var(--theme-mainText) solid;
+        width: calc((100% - var(--width-pageHelp-min))/4);
+        max-width: 300px;
+        min-width: var(--width-side);
+        min-height: 600px;
+        height: calc(100vh - 40px);
+        overflow: hidden;
+    }
+    .page-side-list{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 20px;
+    }
+    .link-H1:hover,.link-H2:hover,.link-H3:hover{
+        opacity: 0.5;
+    }
+    .link-H1{
+        display: flex;
+        cursor: pointer;
+        color: var(--theme-color);
+        font-size: 18px;
+        font-weight: 500;
+    }
+    .link-H2{
+        cursor: pointer;
+        color: var(--theme-mainText);
+        font-size: 16px;
+        font-weight: 500;
+        padding-left: 20px;
+    }
+    .link-H3{
+        cursor: pointer;
+        color: var(--theme-mainText);
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0.7;
+        padding-left: 30px;
+    }
+    .list-icon{
+        position: absolute;
+        width: 10px;
+        height: 20px;
+        transform: translate(var(--trfx-listIcon),var(--trfy-listIcon));
+        top:var(--top-listIcon);
+        background-color: var(--theme-mainText);
+        transition: top ease-out 0.2s;
+    }
+    .higText{
+        padding: 4px 12px;
+        border-radius: 4px;
+        background-color: var(--theme-higBg);
+    }
+    .higLink:hover{
+        text-decoration:underline;
+        text-decoration-color: var(--theme-link);
+    }
+    .noise{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        filter:grayscale();
+        opacity: 0.1;
+        z-index: 20;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+    
+    <div  class="page-side">
+        <div class="list-icon"></div>
+        <div style="height: 40px;"></div>
+        <div id="page-side" class="page-side-list"></div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+        <div style="width:calc((100% - var(--width-pageHelp-min))/4); min-width: var(--width-side)"></div>
+        <div style="width: 100%; display: flex;">
+            <div style="width: calc((100% - var(--width-pageHelp-min))/4); min-width: 100px;"></div>
+            <div id="page-help" class="page-help"></div>
+        </div>
+    </div>
+    <div id="noise" class="noise"></div>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    
+    window.onload = function(){
+        importPage(0)//导入文件并生成目录
+        importPage(1)
+        importPage(2)
+        noise()//美化背景
+    }
+    var mdPage = ['page/page1.md','page/page2.md','page/page3.md']
+    function importPage(n){
+        if(n == 0){
+            var display = 'block'
+        } else {
+            var display = 'none'
+        }
+        axios.get(mdPage[n])
+            .then(response =>{
+                addPage(response.data,n + 1,display)
+                addList(n + 1)
+        })
+    }
+
+    function addList(num){
+        var list = document.getElementById('page-side');
+        var page = document.getElementById('page-help-' + num)
+        var hs = page.querySelectorAll('h1, h2, h3');
+        for (var i = 0; i < hs.length; i++){
+            if (hs[i].tagName == 'H1'){
+                hs[i].id = hs[i].textContent
+                list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#top" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`0px`);root.style.setProperty(`--trfy-listIcon`,`4px`);console.log(this.offsetTop);viewPage(`'+ num +'`)">' + hs[i].textContent + '</a>'
+            }else{
+                hs[i].id = hs[i].textContent
+                list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#' + hs[i].textContent + '" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`-8px`);root.style.setProperty(`--trfy-listIcon`,`0px`);viewPage(`'+ num + '`)">' + hs[i].textContent + '</a>'
+            }
+        }
+        
+    }
+
+    function addPage(e,i,o){
+        var mdToHtml = marked.parse(e)
+        document.getElementById('page-help').innerHTML += '<div data-page-help id="page-help-'+ i +'" style="display:'+ o +'">' + mdToHtml + '</div>';
+    }
+
+    
+    
+    function viewPage(e){
+        for(var i = 1; i < mdPage.length; i++){
+            document.getElementById('page-help-' + i).style.display = 'none';
+        }
+        document.getElementById('page-help-' + e).style.display = 'block';
+        
+    }
+
+    //添加噪点
+    function noise(){
+      var dom = document.createElement('canvas');
+      dom.width = 512;
+      dom.height = 512;
+      var ctx = dom.getContext('2d');
+      for (var i = 0; i < 2 * 65536; i++) {
+        var x = Math.random() * dom.width;
+        var y = Math.random() * dom.height;
+        var color = Math.floor(Math.random() * 6 + (255 - 16)).toString(16);
+        //ctx.fillStyle = `#${color}${color}${color}`;
+        ctx.fillStyle = 'rgba(' + Math.random() * 255 + ',' + Math.random() * 255 + ',' + Math.random() * 255+ ',' + (Math.random() * 0.5 + 0.5) + ')';
+        ctx.beginPath();
+        ctx.arc(x, y, Math.random() * 0.5, 0, 6);
+        ctx.fill();
+    }
+
+    var dom2 = document.createElement('canvas');
+    dom2.width = 512;
+    dom2.height = 512;
+    var ctx2 = dom2.getContext('2d');
+    for (var i = 0; i <  10; i++) {
+        var x = Math.random() * dom.width;
+        var y = Math.random() * dom.height;
+        var color = Math.floor(Math.random() * 6 + (255 - 16)).toString(16);
+        ctx2.fillStyle = 'rgba(' + Math.random() * 255 + ',' + Math.random() * 255 + ',' + Math.random() * 255+ ',' + (Math.random() * 0.5 + 0.5) + ')';
+        ctx2.beginPath();
+        ctx2.arc(x, y, Math.random() *20, 0.1, 0.2);
+        ctx2.fill();
+    }
+
+      var url1 = dom.toDataURL(`image/png`, 0.6);
+      var url2 = dom2.toDataURL(`image/png`, 0.6);
+      document.getElementById("noise").style.background = 'url("'+ url2 +'"),url("'+ url1 +'")'
+      document.getElementById("noise").style.backgroundSize = "25%"
+    }
+
+</script>
+
+</body>
+</html>
