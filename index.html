@@ -3,12 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-tomorrow.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap" rel="stylesheet">
+
+
 <style>
     :root{
         --theme-color:#735e8f;
         --theme-p:#777777;
-        --theme-bg:#f0f0f0;
-        --theme-higBg:#e7e7e7;
+        --theme-bg:#fff;
+        --theme-higBg:#eee;
+        --theme-higText:#76a790;
         --theme-side:#ffffff;
         --theme-mainText:#3c3c3c;
         --theme-title:#777777;
@@ -17,20 +27,23 @@
         --width-side:200px;
         --width-pageHelp-min:400px;
         --width-pageHelp-max:800px;
-        --top-listIcon:40px;
+        --top-listIcon:80px;
         --trfx-listIcon:0px;
         --trfy-listIcon:4px;
+        --tips-copy:'复制';
+        --btn-copy-bg:#ffffff11;
     }
     body{
         color: var(--theme-mainText);
         background-color: var(--theme-bg);
         overflow-y: scroll;
         scroll-behavior: smooth;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family:"Chocolate Classical Sans", Arial, Helvetica, sans-serif;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         letter-spacing: 0.01em;
+        line-height: 1.5em;
         -webkit-user-select: none; /* Safari */
         -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* IE/Edge */
@@ -41,14 +54,19 @@
         border-radius: 10px;
         padding: 10px;
         background: #323232;
+        position: relative;
     }
     code{
-        color: var(--theme-code);
+        color: var(--theme-higText);
+        font-family: 'Courier New', Courier, monospace;
     }
     a{
         cursor: pointer;
         text-decoration: none;
         color: var(--theme-link);
+    }
+    a:hover{
+        font-weight: 700;
     }
     
     h1{
@@ -62,10 +80,14 @@
         color: var(--theme-title);
         margin-bottom: -10px;
         font-weight: 500;
+        position: relative;
     }
+    /*
     h3::before{
         content: "";
         position: absolute;
+        top: -20px;
+        left: -30px;
         width: 60px;
         height: 60px;
         border-radius: 50%;
@@ -73,15 +95,80 @@
         z-index: -1;
         filter: blur(20px);
     }
-    p{
+    */
+    h3::after{
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: calc(100% + 20px);
+        height: 1px;
+        border-radius: 50%;
+        background-color:var(--theme-code);
+        z-index: -1;
+    }
+    li{
         color: var(--theme-p);
         font-weight: 300;
+        margin-left: -10px;
+    }
+    p{
+        color: var(--theme-p);  
+    }
+    .top{
+        width: calc((100% - var(--width-pageHelp-min))/4);
+        max-width: 400px;
+        min-width: var(--width-side);
+        height: 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: var(--theme-side);
+        z-index: 20;
+        font-weight: 700;
+        font-size: 24px;
+    }
+    .topUp1{
+        animation: topUp1 0.2s ease-in;
+    }
+    @keyframes topUp1{
+        0%{
+            transform: translateY(-50%);
+            opacity: 0;
+        }
+        100%{
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    .topUp2{
+        animation: topUp2 2s ease-out;
+    }
+    @keyframes topUp2{
+        0%{
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+        80%{
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+        100%{
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
     .page-help{
         width: calc(100% - 40px - var(--width-side));
         min-width: var(--width-pageHelp-min);
         max-width: var(--width-pageHelp-max);
         position: relative;
+        padding-bottom: 200px;
+        animation: loadPage 4s ease-out;
     }
     .page-side{
         position: fixed;
@@ -89,13 +176,15 @@
         left: 40px;
         display: flex;
         flex-direction: column;
+        /*
         background-color: var(--theme-side);
         border-radius: 10px;
-        border: 1px var(--theme-mainText) solid;
+        */
+        border-left: 1px var(--theme-mainText) solid;
         width: calc((100% - var(--width-pageHelp-min))/4);
-        max-width: 300px;
+        max-width: 400px;
         min-width: var(--width-side);
-        min-height: 600px;
+        min-height: 940px;
         height: calc(100vh - 40px);
         overflow: hidden;
     }
@@ -104,22 +193,40 @@
         flex-direction: column;
         gap: 10px;
         margin-left: 20px;
+        animation: loadPage 4s ease-out;
     }
-    .link-H1:hover,.link-H2:hover,.link-H3:hover{
+
+    @keyframes loadPage{
+        0%{
+            opacity: 0;
+        }
+        50%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+    .link-H1:hover,.link-H2:hover{
         opacity: 0.5;
+        font-weight: 700;
+    }
+    .link-H3:hover{
+        opacity: 0.5;
+        font-weight: 500;
     }
     .link-H1{
         display: flex;
         cursor: pointer;
         color: var(--theme-color);
         font-size: 18px;
-        font-weight: 500;
+        font-weight: 700;
     }
     .link-H2{
         cursor: pointer;
         color: var(--theme-mainText);
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 700;
         padding-left: 20px;
     }
     .link-H3{
@@ -143,10 +250,15 @@
         padding: 4px 12px;
         border-radius: 4px;
         background-color: var(--theme-higBg);
+        color: var(--theme-higText);
     }
     .higLink:hover{
         text-decoration:underline;
         text-decoration-color: var(--theme-link);
+    }
+    .keyInfo{
+        font-weight: 500;
+        line-height: 40px;
     }
     .noise{
         width: 100%;
@@ -158,36 +270,160 @@
         opacity: 0.1;
         z-index: 20;
         pointer-events: none;
+        animation: loadPage2 4s ease-out;
     }
+    @keyframes loadPage2{
+        0%{
+            opacity: 0;
+        }
+        50%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 0.1;
+        }
+    }
+    .btn-copy{
+        color:var(--theme-bg);
+        width: 30px;
+        height: 16px;
+        border-radius: 5px;
+        position: absolute;
+        right:10px;
+        top:4px;
+        animation: copyBtn 1s;
+    }
+    .btn-copy::after{
+        content: var(--tips-copy);
+        width: 30px;
+        height: 16px;
+        font-size: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--btn-copy-bg);
+        border-radius: 4px;
+        position: absolute;
+    }
+    .btn-copy:hover{
+        border: 1px #ffffff77 solid;
+    }
+    @keyframes copyBtn{
+        0%{
+            transform: translateY(10px);
+            opacity: 0;
+        }
+        100%{
+            transform: translateY(0);
+            opacity: 1
+        }
+
+    }
+    table{
+        position: relative;
+        border-radius: 8px;
+        border-spacing: 0;
+        overflow: hidden;
+        margin: 0 0 0 10px;
+        width: calc(100% + 14px);
+    }
+    table::after{
+        content: '';
+        width: calc(100% - 3px);
+        height: calc(100% - 3px);
+        position: absolute;
+        top:0;
+        left: 0;
+        border: 2px var(--theme-higText) solid;
+        border-radius: 8px;
+    }
+    th,td{
+        border: 1px var(--theme-higText) solid;
+        padding: 2px 8px;
+    }
+    th{
+        background-color: var(--theme-higBg);
+    }
+    footer{
+        position: absolute;
+        bottom: 10px;
+        margin-left: 20px;
+    }
+
 </style>
 </head>
 <body>
-    
-    <div  class="page-side">
-        <div class="list-icon"></div>
-        <div style="height: 40px;"></div>
-        <div id="page-side" class="page-side-list"></div>
-    </div>
-    <div style="display: flex; gap: 10px;">
-        <div style="width:calc((100% - var(--width-pageHelp-min))/4); min-width: var(--width-side)"></div>
-        <div style="width: 100%; display: flex;">
-            <div style="width: calc((100% - var(--width-pageHelp-min))/4); min-width: 100px;"></div>
-            <div id="page-help" class="page-help"></div>
+    <div class="top">
+        <div class="topUp1">
+            <div style="display: flex; gap: 4px;font-family: 'Roboto', sans-serif;">
+                TOOLS SET 
+                <span style="font-size: 22px;"> 工具集</span>
+            </div>
+            <div style="font-size: 12px;display: flex;gap: 4px; "> 
+                OPEN SOURCE
+                <span style="font-size: 10px;"> 开源</span>
+            </div>
         </div>
+        
+        <div class="topUp2" style="width: 100%; height: 1px; background-color: var(--theme-mainText); position: absolute;right: 0;bottom: -1px;">
+            <div class="" style="color: var(--theme-color); position: absolute;right: 10px;bottom: 0px; ">HELP.</div>
+            <div class="" style="color: var(--theme-color); position: absolute;right: 10px;bottom: -30px; font-size: 22px;">帮助</div>
+        </div>
+        
     </div>
-    <div id="noise" class="noise"></div>
- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <div>
+        <div  class="page-side">
+            <div class="list-icon"></div>
+            <div style="height: 80px;"></div>
+            <div id="page-side" class="page-side-list"></div>
+            <footer>
+                <div style="width:60px; height: 60px;">
+                    <svg style="width: 100%; height: 100%;" viewBox="0 0 101 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path style="fill:var(--theme-mainText)" fill-rule="evenodd" clip-rule="evenodd" d="M66.1147 27.7478V27.3826C66.6448 27.0641 66.3046 26.5842 65.8474 26.1578L65.9218 26.2265L65.0219 25.3329C64.7181 25.0311 64.226 25.0311 63.9222 25.3329L62.919 26.3291C62.5613 26.7087 62.3646 27.1064 62.8248 27.3826V27.7478H52.1507V27.3826C52.4742 27.3826 52.7848 27.1819 53.0924 26.9109L60.9436 19.0882C61.1054 18.9259 61.1965 18.7078 61.1965 18.4799V14.9534C61.1335 14.0584 60.6216 13.2931 59.8827 12.8653V12.5H69.0591V12.8653C68.327 13.2886 67.8182 14.044 67.7468 14.927V18.4784C67.7468 18.7078 67.8387 18.9259 68.0012 19.0882L75.8509 26.889C76.1661 27.1705 76.4851 27.3826 76.817 27.3826V27.7478H66.1147ZM60.5404 73.2514V73.6167C59.7877 74.0528 59.2698 74.8384 59.2227 75.7546V81.9111C59.2227 82.3412 59.4711 82.7344 59.8607 82.9216L63.787 84.8052C63.8926 84.8558 64.0156 84.8558 64.1212 84.8052L68.0468 82.9216C68.4364 82.7344 68.6847 82.3412 68.6847 81.9111V75.8361C68.665 74.8845 68.1364 74.0649 67.361 73.6167V73.2514H76.5443V73.6167C75.8251 74.0332 75.3201 74.769 75.235 75.6316V86.0866C75.235 86.4624 75.0193 86.8043 74.6791 86.9673L71.8653 88.3174C71.6147 88.4374 71.3405 88.5 71.0626 88.5H56.8449C56.5669 88.5 56.2927 88.4374 56.0429 88.3174L53.2283 86.9673C52.8881 86.8043 52.6724 86.4624 52.6724 86.0866V75.8633C52.6633 74.9003 52.1302 74.0694 51.3472 73.6167V73.2514H60.5404ZM41.6687 27.7478C41.3421 27.7478 41.0293 27.6188 40.7984 27.3886L34.0081 20.6427C33.8684 20.5031 33.6299 20.602 33.6299 20.7982V25.1382C33.6398 26.0997 34.1721 26.9298 34.9551 27.3826V27.7478H25.7696V27.3826C26.4926 26.963 26.9984 26.2212 27.0796 25.3518V14.9375C27.0113 14.0493 26.5017 13.2909 25.7665 12.8653V12.5H34.5671C34.8936 12.5 35.2073 12.6283 35.4382 12.8577L42.1373 19.5138C42.2763 19.6526 42.5155 19.5553 42.5155 19.3583V15.1172C42.5087 14.1527 41.9748 13.3188 41.1895 12.8653V12.5H50.3925V12.8653C49.6027 13.3218 49.0658 14.1625 49.0658 15.136V25.1103C49.0658 26.0838 49.6027 26.9253 50.3925 27.3826V27.7478H41.6687ZM36.228 73.2514V73.6167C35.7989 73.8747 35.9432 74.2377 36.2553 74.5932L37.3353 75.6663C37.6391 75.9682 38.1312 75.9682 38.435 75.6663L39.4853 74.6234L39.2514 74.8407C39.7078 74.4151 40.048 73.9351 39.5187 73.6167V73.2514H50.2042V73.6167C49.8883 73.6167 49.5845 73.8076 49.2853 74.0687L41.4135 81.9111C41.2518 82.0726 41.1606 82.2914 41.1606 82.5201V85.8806C41.1667 86.8465 41.7014 87.6797 42.4859 88.134V88.5H33.2836V88.134C34.0727 87.6774 34.6096 86.8367 34.6096 85.864V82.5209C34.6096 82.2922 34.5185 82.0726 34.3559 81.9111L26.5267 74.1313C26.2047 73.8385 25.8782 73.6167 25.5379 73.6167V73.2514H36.228Z" />
+    <path style="fill:var(--theme-mainText)" fill-rule="evenodd" clip-rule="evenodd" d="M69.621 53.4318C69.621 53.4318 69.6218 53.4454 69.6203 53.4673H69.6165C69.6218 53.4129 69.6279 53.3579 69.6324 53.3028C69.7312 52.9405 70.745 51.4984 74.079 49.5265C76.7994 47.916 79.4727 46.8935 79.5 46.8837L77.6485 41.918C76.6118 39.122 73.0796 37.9953 70.1724 39.5454C69.476 39.9174 68.7522 40.3242 68.0262 40.7626C61.7827 44.5329 58.4411 48.7341 58.0918 53.2507C58.0014 53.6076 57.0149 55.049 53.7188 57.0361C53.2556 57.316 52.7931 57.5779 52.345 57.8201C51.3023 58.3854 50.0476 58.3907 49.0824 57.8345C48.6639 57.593 48.2333 57.3319 47.8035 57.0527C45.9405 55.8437 44.9198 54.8332 44.3988 54.1495C44.0419 53.6793 44.0913 53.0183 44.5188 52.5496C45.1431 51.8644 46.3149 50.8547 48.3594 49.6449C51.0805 48.0353 53.7538 47.0127 53.7705 47.0059L53.8168 46.9893C53.974 46.9282 57.7052 45.4815 61.5161 43.1398C62.1731 42.7368 62.7973 42.3278 63.3897 41.915C68.7082 38.2051 66.4306 30.6412 60.0086 30.6412H59.7869C59.7884 30.6231 59.7907 30.6125 59.7907 30.6117C59.7086 30.9611 58.7282 32.4078 55.4147 34.4092C54.3181 35.071 53.2282 35.6355 52.3192 36.0732C51.4724 35.6347 50.4615 35.0687 49.4591 34.4031C46.4463 32.4063 45.6831 30.9604 45.6535 30.6117C45.6535 30.6117 45.6542 30.6223 45.6527 30.6412H45.437C39.0052 30.6412 35.6036 38.2157 40.3783 41.9263C40.4231 41.961 40.4687 41.9957 40.5142 42.0312C39.9781 42.3965 39.4677 42.7655 38.9839 43.139C38.0695 42.3285 37.0306 41.5361 35.8649 40.7626C35.2049 40.3242 34.5419 39.9174 33.9009 39.5454C31.2269 37.9953 27.5253 39.1212 26.0694 41.9173L23.4827 46.8867C23.5063 46.8965 25.932 47.8806 28.3744 49.4465C31.5155 51.4599 32.3357 52.9383 32.3782 53.305H32.3767C32.3759 53.3201 32.3752 53.3345 32.3744 53.3488C32.3729 53.3639 32.3714 53.3782 32.3699 53.3926H32.3721C32.3699 53.4182 32.3691 53.4424 32.3676 53.4673H32.3645C32.3661 53.4454 32.3691 53.4318 32.3691 53.4318C32.281 53.7827 31.274 55.2317 27.921 57.2157C25.1999 58.8253 22.5266 59.8479 22.5 59.8577L24.3515 64.8241C25.3874 67.6209 28.9204 68.7461 31.8268 67.196C32.524 66.8247 33.247 66.418 33.9731 65.9795C35.2664 65.1984 36.4337 64.3985 37.4772 63.5819C38.3528 64.3419 39.3386 65.0867 40.436 65.8172C43.9386 68.1423 47.4951 69.5717 47.6447 69.6305C49.0353 70.1852 50.6469 70.1799 52.1164 69.6154C52.2736 69.5551 56.0056 68.1099 59.8165 65.7697C60.9785 65.0565 62.0387 64.3283 62.9971 63.5865C63.916 64.4023 64.961 65.1999 66.1344 65.9795C66.7951 66.418 67.4574 66.8247 68.0983 67.196C70.7724 68.7461 74.4739 67.6209 75.9298 64.8241L78.5173 59.8547C78.493 59.8449 76.0673 58.8616 73.6256 57.2957C70.4716 55.2732 69.6575 53.7918 69.621 53.4318ZM32.379 53.2741H32.3812C32.3805 53.2847 32.379 53.2945 32.3782 53.305C32.3782 53.3005 32.3782 53.2907 32.379 53.2741Z" />
+    <circle cx="50.8501" cy="50.1367" r="48.5" stroke="var(--theme-mainText)" stroke-width="3" stroke-linecap="square" stroke-dasharray="20 10"/>
+    <g clip-path="url(#clip0_148_805)">
+    <circle cx="50.8501" cy="50.1367" r="48.5" stroke="var(--theme-mainText)" stroke-width="3" stroke-linecap="square"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_148_805">
+    <rect width="101" height="52" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
 
+                </div>
+                <p> &copy; YNYU <a href="mailto:lvynyu2@gmail.com">lvynyu2@gmail.com</a></p>
+        </footer>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <div style="width:calc((100% - var(--width-pageHelp-min))/4); min-width: var(--width-side)"></div>
+            <div style="width: 100%; display: flex;">
+                <div style="width: calc((100% - var(--width-pageHelp-min))/4); min-width: 100px;"></div>
+                <div id="page-help" class="page-help"></div>
+            </div>
+        </div>
+        <div id="noise" class="noise"></div>
+    </div>
+    
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.js"></script>
 <script>
     
     window.onload = function(){
         importPage(0)//导入文件并生成目录
         importPage(1)
         importPage(2)
+        addCopy()//复制按钮
         noise()//美化背景
+        setTimeout(() => {
+            Prism.highlightAll();
+        },10)
+        
     }
+    
     var mdPage = ['page/page1.md','page/page2.md','page/page3.md']
-    function importPage(n){
+    function importPage(n,){
         if(n == 0){
             var display = 'block'
         } else {
@@ -196,7 +432,7 @@
         axios.get(mdPage[n])
             .then(response =>{
                 addPage(response.data,n + 1,display)
-                addList(n + 1)
+                addList(n + 1)      
         })
     }
 
@@ -211,14 +447,14 @@
             }else{
                 hs[i].id = hs[i].textContent
                 list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#' + hs[i].textContent + '" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`-8px`);root.style.setProperty(`--trfy-listIcon`,`0px`);viewPage(`'+ num + '`)">' + hs[i].textContent + '</a>'
-            }
+            } // style="animation-delay:calc( 0.1s * '+ i +')"
         }
         
     }
 
     function addPage(e,i,o){
         var mdToHtml = marked.parse(e)
-        document.getElementById('page-help').innerHTML += '<div data-page-help id="page-help-'+ i +'" style="display:'+ o +'">' + mdToHtml + '</div>';
+        document.getElementById('page-help').innerHTML += '<div data-page-help id="page-help-'+ i +'" style="display:'+ o +';position: relative;">' + mdToHtml + '</div>';
     }
 
     
@@ -228,6 +464,18 @@
             document.getElementById('page-help-' + i).style.display = 'none';
         }
         document.getElementById('page-help-' + e).style.display = 'block';
+        
+    }
+
+
+    //添加copy按键
+    function addCopy(){
+       setTimeout(() => {
+           var copys = document.querySelectorAll('code')
+           for (var i = 0; i < copys.length; i++){
+            copys[i].innerHTML += `<div class="btn-copy" onclick="this.style.setProperty('--tips-copy','&quot✔&quot');this.style.setProperty('--btn-copy-bg','#77ff7777'); setTimeout(() => { this.style.setProperty('--tips-copy','&quot复制&quot');this.style.setProperty('--btn-copy-bg','#ffffff11');},1000);navigator.clipboard.writeText(parentNode.innerText) .then(function() { console.log('复制成功')});"><div>`
+           }
+       },1000)
         
     }
 
