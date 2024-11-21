@@ -1,5 +1,5 @@
 # 模式
-<span class="keyInfo">底部栏右侧有用以切换模式的tab: <span class="higText"> 创建 | 导出 | 编辑 | 帮助 </span>,帮助即本文档</span>
+<span class="keyInfo">底部栏右侧有用以切换模式的tab: <span class="higText"> 创建 | 导出 | 编辑 | 导航 | 帮助 </span>,帮助即本文档</span>
 ## 创建
 ### 数据导入
 <span class="keyInfo">导入内容：<span class="higText"> \*name | \*w | \*h | s | type</span>（带<span class="higText"> \*</span>号为必填项）</span><br>
@@ -34,9 +34,12 @@ allFrame = [
 + 拖拽：将本地文件拖拽到插件区域；
 + 输入：可直接复制表格文件并粘贴，通常是一个用制表符<span class="higText"> tab </span>隔开每行数据的文本；如手动输入也要遵循这个规则；<br>
 
-### 三级标题
-内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容
-内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容
+### 勾选标签
+数据符合规范，右上角会出现<span class="higText"> 确认 | 清空 </span>，点击确认后是标签预览，可再次检查，并删除不需要的标签<br>
+### 创建对象
+当确认无误后，点击<span class="higText">创建对象</span>即可在画面中心创建画板，画板会根据横竖和大小自动排布<br>
+### 特殊功能
+可通过拖拽大于4096px的图（含网页源）或复制svg代码（如PS右键复制的代码）粘贴到输入区域，可自动裁切并生成在画面中心<br>
 ## 导出
 ### 图片格式
 目前仅支持将批量<span class="higText">jpg | png</span>导出为压缩包,可通过所选对象命名中的<span class="higText">/</span>创建路径（文件夹）<br>
