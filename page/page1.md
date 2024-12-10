@@ -34,7 +34,7 @@ allFrame = [
 + 输入：可直接复制表格文件并粘贴，通常是一个用制表符<span class="higText"> tab </span>隔开每行数据的文本；如手动输入也要遵循这个规则；<br>
 
 ### 勾选标签
-数据符合规范，右上角会出现<span class="higText"> 确认 | 清空 </span>，点击确认后自动去除非法空格，显示候选标签，可再次检查，关闭不需要的标签<br>
+<span class="keyInfo">数据符合规范，右上角会出现<span class="higText"> 确认 | 清空 </span>，点击确认后自动去除非法空格，显示候选标签，可再次检查，关闭不需要的标签</span><br>
 ### 返回
 <span class="keyInfo">如需修改，点击<span class="higText">返回</span>即可再次在文本框处修改</span><br>
 ### 创建对象
