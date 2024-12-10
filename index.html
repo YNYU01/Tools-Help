@@ -180,19 +180,23 @@
         background-color: var(--theme-side);
         border-radius: 10px;
         */
+        background-color: var(--theme-bg);
         border-left: 1px var(--theme-mainText) solid;
         width: calc((100% - var(--width-pageHelp-min))/4);
         max-width: 400px;
         min-width: var(--width-side);
-        min-height: 940px;
+        min-height: 640px;
         height: calc(100vh - 40px);
         overflow: hidden;
+        z-index: 10;
     }
     .page-side-list{
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-left: 20px;
+        height:100%;
+        overflow-y: scroll;
         animation: loadPage 4s ease-out;
     }
 
@@ -236,6 +240,7 @@
         font-weight: 500;
         opacity: 0.7;
         padding-left: 30px;
+        margin: -6px 0 -6px 0;
     }
     .list-icon{
         position: absolute;
@@ -374,8 +379,9 @@
     <div>
         <div  class="page-side">
             <div class="list-icon"></div>
-            <div style="height: 80px;"></div>
+            <div style="height: 80px; min-height: 80px; max-height: 80px;"></div>
             <div id="page-side" class="page-side-list"></div>
+            <div style="height: 160px; min-height: 160px; max-height: 160px;"></div>
             <footer>
                 <div style="width:60px; height: 60px;">
                     <svg style="width: 100%; height: 100%;" viewBox="0 0 101 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -412,8 +418,7 @@
     
     window.onload = function(){
         importPage(0)//导入文件并生成目录
-        importPage(1)
-        importPage(2)
+
         addCopy()//复制按钮
         noise()//美化背景
         setTimeout(() => {
@@ -423,38 +428,42 @@
     }
     
     var mdPage = ['page/page1.md','page/page2.md','page/page3.md']
-    function importPage(n,){
+    async function importPage(n){
         if(n == 0){
             var display = 'block'
         } else {
             var display = 'none'
         }
-        axios.get(mdPage[n])
+         axios.get(mdPage[n])
             .then(response =>{
                 addPage(response.data,n + 1,display)
-                addList(n + 1)      
+                addList(n + 1)  
+                if (n < 2){
+                    importPage(n + 1)
+                }    
         })
+        
     }
 
-    function addList(num){
+    async function addList(num){
         var list = document.getElementById('page-side');
         var page = document.getElementById('page-help-' + num)
         var hs = page.querySelectorAll('h1, h2, h3');
         for (var i = 0; i < hs.length; i++){
             if (hs[i].tagName == 'H1'){
                 hs[i].id = hs[i].textContent
-                list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#top" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`0px`);root.style.setProperty(`--trfy-listIcon`,`4px`);console.log(this.offsetTop);viewPage(`'+ num +'`)">' + hs[i].textContent + '</a>'
+                 list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#top" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`0px`);root.style.setProperty(`--trfy-listIcon`,`4px`);console.log(this.offsetTop);viewPage(`'+ num +'`)">' + hs[i].textContent + '</a>'
             }else{
                 hs[i].id = hs[i].textContent
-                list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#' + hs[i].textContent + '" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`-8px`);root.style.setProperty(`--trfy-listIcon`,`0px`);viewPage(`'+ num + '`)">' + hs[i].textContent + '</a>'
+                 list.innerHTML += '<a class="link-'+  hs[i].tagName +'" href="#' + hs[i].textContent + '" onclick="var root = document.documentElement;root.style.setProperty(`--top-listIcon`,this.offsetTop + `px`);root.style.setProperty(`--trfx-listIcon`,`-8px`);root.style.setProperty(`--trfy-listIcon`,`0px`);viewPage(`'+ num + '`)">' + hs[i].textContent + '</a>'
             } // style="animation-delay:calc( 0.1s * '+ i +')"
         }
         
     }
 
-    function addPage(e,i,o){
+    async function addPage(e,i,o){
         var mdToHtml = marked.parse(e)
-        document.getElementById('page-help').innerHTML += '<div data-page-help id="page-help-'+ i +'" style="display:'+ o +';position: relative;">' + mdToHtml + '</div>';
+         document.getElementById('page-help').innerHTML += '<div data-page-help id="page-help-'+ i +'" style="display:'+ o +';position: relative;">' + mdToHtml + '</div>';
     }
 
     
