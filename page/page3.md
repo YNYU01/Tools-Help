@@ -17,7 +17,7 @@ Hellow~
 下载最新文件<br>
 | 版本 | 适用软件 |
 |:---:|:---:|
-| <span class="higLink">[ToolsSet 1.0]([ToolsSet](https://github.com/YNYU01/ToolsSet/tree/fc95cc547d25323ea23d9cc028d2b00ed04fc21e/ToolsSetMg)</span>| MasterGo |
+| <span class="higLink">[ToolsSet 1.0](https://github.com/YNYU01/ToolsSet/tree/fc95cc547d25323ea23d9cc028d2b00ed04fc21e/ToolsSetMg)</span>| MasterGo |
 | <span class="higLink">[ToolsSetPs 1.0](ToolsSet)</span>| Adobe Photoshop |
 | <span class="higLink">[ToolsSetAe 1.0](ToolsSet)</span>| Adobe After Effects |
 
