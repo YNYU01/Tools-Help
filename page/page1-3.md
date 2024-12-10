@@ -55,7 +55,7 @@ ps中则通过图片创建画板<br>
 后续将支持导出序列到<span class="higText">gif | apng | webp | svga</span>等格式;<br>
 
 ### PS/AE
-<span class="keyInfo">后续将基于图层整理和PS插件，通过<span class="higText">json</span>形式完成图层内容数据互传</span>
+后续将基于图层整理和PS插件，通过<span class="higText">json</span>形式完成图层内容数据互传
 ## 编辑
 <span class="keyInfo">对位图/矢量图/快照进行调色、变形等编辑</span>
 ## 导航
