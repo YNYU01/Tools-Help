@@ -419,8 +419,6 @@
     
     window.onload = function(){
         importPage(0)//导入文件并生成目录
-
-        addCopy()//复制按钮
         noise()//美化背景
         setTimeout(() => {
             Prism.highlightAll();
@@ -441,6 +439,8 @@
                 addList(n + 1)  
                 if (n < 2){
                     importPage(n + 1)
+                    if ( n == 2 ){
+                        addCopy()//添加复制按钮
                 }    
         })
         
