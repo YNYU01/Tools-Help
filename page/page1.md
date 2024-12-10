@@ -2,7 +2,7 @@
 <span class="keyInfo">底部栏右侧有用以切换模式的tab: <span class="higText"> 创建 | 导出 | 编辑 | 导航 | 变量 | 帮助 </span>,帮助即本文档</span>
 ## 创建
 ### 数据导入
-<span class="keyInfo">导入内容：<span class="higText"> \*name | \*w | \*h | s | type</span>（带<span class="higText"> \*</span>号为必填项）</span><br>
+导入内容：<span class="higText"> \*name | \*w | \*h | s | type</span>（带<span class="higText"> \*</span>号为必填项）<br>
 | name | w | h | s| type |
 |:---:|:---:|:---:|:---:|:---:|
 | kv | 1920 | 1080 |   |   |
@@ -34,18 +34,18 @@ allFrame = [
 + 输入：可直接复制表格文件并粘贴，通常是一个用制表符<span class="higText"> tab </span>隔开每行数据的文本；如手动输入也要遵循这个规则；<br>
 
 ### 勾选标签
-<span class="keyInfo">数据符合规范，右上角会出现<span class="higText"> 确认 | 清空 </span>，点击确认后自动去除非法空格，显示候选标签，可再次检查，关闭不需要的标签</span><br>
+数据符合规范，右上角会出现<span class="higText"> 确认 | 清空 </span>，点击确认后自动去除非法空格，显示候选标签，可再次检查，关闭不需要的标签<br>
 ### 返回
-<span class="keyInfo">如需修改，点击<span class="higText">返回</span>即可再次在文本框处修改</span><br>
+如需修改，点击<span class="higText">返回</span>即可再次在文本框处修改<br>
 ### 创建对象
-<span class="keyInfo">当确认无误后，点击<span class="higText">创建对象</span>即可在画面中心创建画板，画板会根据横竖和大小自动排布</span><br>
+当确认无误后，点击<span class="higText">创建对象</span>即可在画面中心创建画板，画板会根据横竖和大小自动排布<br>
 ### 特殊功能
-<span class="keyInfo">mg中可通过拖拽大于4096px的图（含从网页拖拽）或复制svg代码（如PS右键复制的代码）粘贴到输入区域，可自动裁切并生成在画面中心</span><br>
+mg中可通过拖拽大于4096px的图（含从网页拖拽）或复制svg代码（如PS右键复制的代码）粘贴到输入区域，可自动裁切并生成在画面中心<br>
 ps中则通过图片创建画板<br>
 后续将支持通过上传带图层信息的<span class="higText">json | xml</span>文件生成图层<br>
 ## 导出
 ### 图片格式
-<span class="keyInfo">目前仅支持将批量<span class="higText">jpg | png</span>导出为压缩包,可通过所选对象命名中的<span class="higText">/</span>创建路径（文件夹）</span><br>
+目前仅支持将批量<span class="higText">jpg | png</span>导出为压缩包,可通过所选对象命名中的<span class="higText">/</span>创建路径（文件夹）<br>
 + 所选对象的填充为空，判断为<span class="higText">png</span>
 + 所选对象设置了圆角，判断为<span class="higText">png</span>
 + 除此之外，判断为<span class="higText">jpg</span><br>
