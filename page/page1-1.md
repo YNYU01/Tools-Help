@@ -24,6 +24,7 @@ allFrame = [
 {name:"banner#000000",w:1200,h:300},
 ...
 ]
+//按下返回后会将数组处理成制表形式文本，回到输入框编辑
 ```
 + s：资源的目标大小，目前未开放该数值类型，单位默认为k，导出时设置，或通过修改代码预设;
 + type：资源的目标导出格式，目前未开放该数值类型，默认按[导出](#导出)规则识别<span class="higText">jpg | png</span>:<br>
@@ -50,7 +51,7 @@ ps中则通过图片创建画板<br>
 + 所选对象设置了圆角，判断为<span class="higText">png</span>
 + 除此之外，判断为<span class="higText">jpg</span><br>
 如果背景没透明像素但是想保存成png，需要去掉画板填充，在子层设置背景，改动后需重新选中加载；<br>
-后续将支持导出序列到<span class="higText">gif | apng | webp | svga</span>等格式;
+后续将支持导出序列到<span class="higText">gif | apng | webp | svga</span>等格式;<br>
 
 ### PS/AE
 <span class="keyInfo">后续将基于图层整理和PS插件，通过<span class="higText">json</span>形式完成图层内容数据互传</span>
