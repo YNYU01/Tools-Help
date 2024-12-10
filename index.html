@@ -97,6 +97,10 @@
         z-index: -1;
         filter: blur(20px);
     }
+    */
+    h3::before{
+        content: "#";
+    }
     
     h3::after{
         content: "";
@@ -105,12 +109,13 @@
         left: 0;
         width: calc(100% + 20px);
         height: 1px;
+        min-height: 1px;
+        max-height: 1px;
         border-radius: 50%;
         background-color:var(--theme-code);
         z-index: -1; 
     }
-    */
-    
+
     li{
         color: var(--theme-p);
         font-weight: 300;
