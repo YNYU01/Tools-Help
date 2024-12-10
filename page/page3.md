@@ -14,9 +14,14 @@ Hellow~
 内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容
 ## 版本日志
 ### 发布更新
-下载最新文件
-<span class="higLink">[ToolsSet 1.0](ToolsSet)</span>
-历史版本自行查阅仓库~
+下载最新文件<br>
+| 版本 | 适用软件 |
+|:---:|:---:|
+| <span class="higLink">[ToolsSet 1.0](ToolsSet)</span>| MasterGo |
+| <span class="higLink">[ToolsSetPs 1.0](ToolsSet)</span>| Adobe Photoshop |
+| <span class="higLink">[ToolsSetAe 1.0](ToolsSet)</span>| Adobe After Effects |
+
+历史版本自行查阅仓库~<br>
 ### 增改修复
 内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容
 内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容这是内容内容
