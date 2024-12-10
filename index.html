@@ -438,11 +438,11 @@
                 addPage(response.data,n + 1,display)
                 addList(n + 1)  
                 if (n < 2){
-                    importPage(n + 1)
-                    if ( n == 2 ){
-                      addCopy()//添加复制按钮
-                    }   
-                }    
+                    importPage(n + 1)    
+                }
+                if ( n == 2 ){
+                    addCopy()//添加复制按钮
+                }
         })
         
     }
