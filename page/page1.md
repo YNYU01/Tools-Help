@@ -1,5 +1,5 @@
 # 模式
-<span class="keyInfo">底部栏右侧有用以切换模式的tab: <span class="higText"> 创建 | 导出 | 编辑 | 导航 | 变量 | 帮助 </span>,帮助即本文档</span>
+<span class="keyInfo">底部栏切换模式: <span class="higText"> 创建 | 导出 | 编辑 | 导航 | 变量 </span></span>
 ## 创建
 ### 数据导入
 导入内容：<span class="higText"> \*name | \*w | \*h | s | type</span>（带<span class="higText"> \*</span>号为必填项）<br>
