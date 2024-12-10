@@ -200,16 +200,20 @@
         overflow: hidden;
         z-index: 10;
     }
-    .page-side-list{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-left: 20px;
+    .page-side-box{
+        position: relative;
         height:100%;
         overflow-y: scroll;
         animation: loadPage 4s ease-out;
     }
 
+    .page-side-list{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 20px;
+        animation: loadPage 4s ease-out;
+    }
     @keyframes loadPage{
         0%{
             opacity: 0;
@@ -391,9 +395,9 @@
         <div  class="page-side">
             
             <div style="height: 80px; min-height: 80px; max-height: 80px;"></div>
-            <div class="page-side-list">
+            <div class="page-side-box">
                 <div class="list-icon"></div>
-                <div id="page-side" ></div>
+                <div id="page-side" class="page-side-list" ></div>
             </div>
             <div style="height: 160px; min-height: 160px; max-height: 160px;"></div>
             <footer>
