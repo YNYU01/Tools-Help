@@ -49,7 +49,8 @@ ps中则通过图片创建画板<br>
 目前仅支持将批量<span class="higText">jpg | png</span>导出为压缩包,可通过所选对象命名中的<span class="higText">/</span>创建路径（文件夹）<br>
 + 所选对象的填充为空，判断为<span class="higText">png</span>
 + 所选对象设置了圆角，判断为<span class="higText">png</span>
-+ 除此之外，判断为<span class="higText">jpg</span><br>
++ 除此之外，判断为<span class="higText">jpg</span>
+
 如果背景没透明像素但是想保存成png，需要去掉画板填充，在子层设置背景，改动后需重新选中加载；<br>
 后续将支持导出序列到<span class="higText">gif | apng | webp | svga</span>等格式;<br>
 
