@@ -289,6 +289,9 @@
         opacity: 0.1;
         z-index: 20;
         pointer-events: none;
+        background:
+            url("https://cdn.jsdelivr.net/gh/YNYU01/listEase@refs/heads/main/img/noise.png") 0 0/100px 100px,
+            url("https://cdn.jsdelivr.net/gh/YNYU01/listEase@refs/heads/main/img/noise.png") 0 0/200px 200px;
         animation: loadPage2 4s ease-out;
     }
     @keyframes loadPage2{
@@ -436,7 +439,7 @@
     
     window.onload = function(){
         importPage(0)//导入文件并生成目录
-        noise()//美化背景
+        //noise()//美化背景
         setTimeout(() => {
             Prism.highlightAll();
         },10)
