@@ -7,7 +7,7 @@
 | name | w | h | s| type |
 |:---:|:---:|:---:|:---:|:---:|
 | kv | 1920 | 1080 |   |   |
-| banner#000000 | 1200 | 300 | 500k | jpg |
+| banner#000000 | 1200 | 300 | 500 | jpg |
 + name：资源的名称；
 + w：资源的宽度，单位默认为px；
 + h：资源的高度,单位默认为px；
@@ -27,8 +27,8 @@ allFrame = [
 ]
 //按下返回后会将数组处理成制表形式文本，回到输入框编辑
 ```
-+ s：资源的目标大小，目前未开放该数值类型，单位默认为k，导出时设置，或通过修改代码预设;
-+ type：资源的目标导出格式，目前未开放该数值类型，默认按[导出](#导出)规则识别<span class="higText">jpg | png</span>:<br>
++ s：资源的目标大小,单位默认为k，可随表格传入或在导出时设置，将作为所选对象的自定义属性;
++ type：资源的目标导出格式，默认按[导出](#导出)规则识别<span class="higText">jpg | png</span>:<br>
 
 <span class="keyInfo">导入方式：<span class="higText"> 点击 | 拖拽 | 输入 </span></span><br>
 + 点击：点击图标会拉起本地上传文件；
@@ -65,6 +65,8 @@ ps中则通过图片创建画板<br>
 目前仅支持将批量<span class="higText">jpg | png</span>导出为压缩包,可通过所选对象命名中的<span class="higText">/</span>创建路径（文件夹）<br>
 + 所选对象的填充为空，判断为<span class="higText">png</span>
 + 所选对象设置了圆角，判断为<span class="higText">png</span>
++ 所选对象命名中包含了格式关键词，首次识别到将自动设置type
++ 所选对象设置了type，将读取对应格式
 + 除此之外，判断为<span class="higText">jpg</span>
 
 如果背景没透明像素但是想保存成png，需要去掉画板填充，在子层设置背景，改动后需重新选中加载；<br>
